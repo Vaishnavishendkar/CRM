@@ -16,8 +16,9 @@ pool = SimpleConnectionPool(
 def get_db_connection():
     conn = pool.getconn()
     try:
-        yield conn
-        conn.commit()
+        with conn.cursor() as cursor:
+            yield cursor
+            conn.commit()
     except Exception:
         conn.rollback()
         raise
@@ -25,16 +26,15 @@ def get_db_connection():
         conn.close()
 
 def init_db():
-    with get_db_connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute('''
-            CREATE TABLE users (
+    with get_db_connection() as cursor:
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
             id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-            username VARCHAR(50) NOT NULL,
+            name VARCHAR(50) NOT NULL,
             email VARCHAR(100) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
             role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'user','customer')),
             created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-''')
+            );
+            ''')

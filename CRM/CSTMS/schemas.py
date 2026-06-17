@@ -3,10 +3,10 @@ from typing import Optional
 
 
 
-def Register(BaseModel):
+class Register(BaseModel):
     username: str
     email: str
     password: str
-    roll: str
+    role: str
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
