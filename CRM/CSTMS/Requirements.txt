@@ -1,0 +1,14 @@
+# backend 
+fastapi>=0.100.0
+uvicorn>=0.22.0
+supabase>=2.0.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+pydantic-settings>=2.0.0
+python-multipart>=0.0.6
+
+# frontend
+streamlit>=1.24.0
+requests>=2.31.0
+pandas>=2.0.0
+plotly>=5.15.0
