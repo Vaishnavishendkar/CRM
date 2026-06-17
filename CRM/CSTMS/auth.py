@@ -8,7 +8,7 @@ from fastapi import HTTPException,FastAPI, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 load_dotenv()
-JWT_SECRET = os.getenv("JWT_SECRET")
+JWT_SECRET = os.getenv("JWT_SECRET_KEY")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
 
 #password hashing 

@@ -1,10 +1,10 @@
 import time
 from fastapi import FastAPI, HTTPException
 from datetime import datetime
-from schemas import Register
+from schemas import Register,Login
 from database import get_db_connection
 from database import init_db
-from auth import hash_password
+from auth import create_token, hash_password, verify_password
 
 app = FastAPI()
 
@@ -25,8 +25,20 @@ def register_user(user:Register):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/login")
-def login_user():
-    
+def login_user(user: Login):
+    try:
+        with get_db_connection() as cur:
+            cur.execute("SELECT id, password FROM users WHERE email=%s", (user.email,))
+            result = cur.fetchone()
+            if not result or not verify_password(user.password, result[1]):
+                raise HTTPException(status_code=401, detail="Invalid credentials")
+            user_id = result[0]
+            token = create_token(user_id)
+            return {"message": "Login successful", "token": token}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 
