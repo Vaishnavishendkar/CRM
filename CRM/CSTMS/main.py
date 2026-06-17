@@ -24,4 +24,9 @@ def register_user(user:Register):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/login")
+def login_user():
+    
+
+
 

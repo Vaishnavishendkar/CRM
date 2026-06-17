@@ -10,3 +10,7 @@ class Register(BaseModel):
     role: str
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
+
+class Login(BaseModel):
+    email: str
+    password: str
